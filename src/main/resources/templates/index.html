@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+	function login() {
+		var username = $('#usernameID').val();
+		var password = $('#passwordID').val();
+		
+		jQuery.fn.center = function () {
+		    this.css("position","absolute");
+		    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
+		                                                $(window).scrollTop()) + "px");
+		    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
+		                                                $(window).scrollLeft()) + "px");
+		    return this;
+		}
+		
+		$.ajax({
+			url : "http://localhost:8080/login?username="+username+"&password="+password
+		}).then(function(data) {
+			if(data.result == 'Success'){
+				$('#formID').hide()
+				$('.result').center();
+				$('.result').css({ 'color': 'green', 'font-size': '300%' });
+				$('.result').text("Hello "+ data.loginUser.name);
+			}else{
+				alert("Username or password incorrect!!!")
+			}
+		});
+	}
+</script>
+
+
+</head>
+<body>
+	<div id="formID">
+		<label for="usernameID">Username</label>
+		<input type="text" id="usernameID" placeholder="Username">
+		<label for="passwordID">Password</label>
+		<input type="password" id="passwordID"
+			placeholder="Password">
+		<button onclick="login()">Sign in</button>
+	</div>
+	<div>
+		<p class="result"></p>
+	</div>
+</body>
+</html>

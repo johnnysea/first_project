@@ -1,2 +1,4 @@
 hello/HelloController.class
 hello/Application.class
+nz/co/login/User.class
+nz/co/login/Response.class
