@@ -1,10 +1,80 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+	function login() {
+		var username = $('#usernameID').val();
+		var password = $('#passwordID').val();
+		
+		jQuery.fn.center = function () {
+		    this.css("position","absolute");
+		    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
+		                                                $(window).scrollTop()) + "px");
+		    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
+		                                                $(window).scrollLeft()) + "px");
+		    return this;
+		}
+		
+		$.ajax({
+			url : "http://localhost:8080/login?username="+username+"&password="+password
+		}).then(function(data) {
+			if(data.result == 'Success'){
+				$('#formID').hide()
+				$('.result').center();
+				$('.result').css({ 'color': 'green', 'font-size': '300%' });
+				$('.result').text("Hello there,"+ data.loginUser.name);
+				$('.id').text(data.loginUser.id);
+				$('.age').text(data.loginUser.age);
+				$('.gender').text(data.loginUser.gender);
+				$('.major').text(data.loginUser.major);
+			}else{
+				alert("Username or password incorrect!!!")
+			}
+		});
+	}
+</script>
+
+
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+	<div id="formID">
+		<label for="usernameID">Username</label>
+		<input type="text" id="usernameID" placeholder="Username">
+		<label for="passwordID">Password</label>
+		<input type="password" id="passwordID"
+			placeholder="Password">
+		<button onclick="login()">Sign in</button>
+	</div>
+	<div>
+		<p class="result"></p>
+		<p class="id"></p>
+		<p class="age"></p>
+		<p class="gender"></p>
+		<p class="major"></p>
+	</div>
+	<div>
+	    <p>Register new account</p>
+	    <label for="new_usernameID">Username</label>
+		<input type="text" id="new_usernameID" placeholder="Username">	    
+	    <label for="new_password">Password</label>
+	    <input type="text" id="new_password" placeholder="Password">
+	    <label for="new_age">Age</label>
+	    <input type="text" id="new_age" placeholder="Age">   
+	    <label for="new_gender">Gender</label>
+	    <select id = "new_gender">
+			<option value="male">Male</option>
+			<option value="female">Female</option>
+			<option value="other">Other</option>
+		</select> 
+		<label for="new_major">Major</label>
+	 	<input type="text" id="new_major" placeholder="Major">
+	    <button onclick="Register()">Register</button>
+	    
+	</div>
 </body>
 </html>

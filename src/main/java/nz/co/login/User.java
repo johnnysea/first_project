@@ -6,6 +6,28 @@ public class User {
 	private String name;
 	private String password;
 	
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getMajor() {
+		return major;
+	}
+	public void setMajor(String major) {
+		this.major = major;
+	}
+	private int age;
+	private String gender;
+	private String major;
+	
 	public String getPassword() {
 		return password;
 	}

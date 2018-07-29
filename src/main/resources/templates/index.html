@@ -28,10 +28,39 @@
 				$('.result').center();
 				$('.result').css({ 'color': 'green', 'font-size': '300%' });
 				$('.result').text("Hello there,"+ data.loginUser.name);
+				$('.id').text(data.loginUser.id);
+				$('.age').text(data.loginUser.age);
+				$('.gender').text(data.loginUser.gender);
+				$('.major').text(data.loginUser.major);
 			}else{
 				alert("Username or password incorrect!!!")
 			}
 		});
+	}
+	
+	function register(){
+		var newUsername = $('#new_usernameID').val();
+		var newPassword = $('#new_password').val();
+		var rePassword = $("#redo_password").val();
+		var age = $('#new_age').val();
+		var gender = $('#new_gender').val();
+		var major = $('#new_major').val();
+		if (newPassword == rePassword){
+	        $.post("http://localhost:8080/register",
+	                {
+	                  username: newUsername,
+	                  password: newPassword,
+	                  age: age,
+	                  gender: gender,
+	                  major: major
+	                },
+	                function(data,status){
+	                    alert("Data: " + data + "\nStatus: " + status);
+	                });			
+		}else{
+			alert("Passwords do not match!!!")
+		}
+
 	}
 </script>
 
@@ -48,6 +77,38 @@
 	</div>
 	<div>
 		<p class="result"></p>
+		<p class="id"></p>
+		<p class="age"></p>
+		<p class="gender"></p>
+		<p class="major"></p>
+	</div>
+	<div>
+	    <p>Register new account</p>
+	    <label for="new_usernameID">Username</label>
+		<input type="text" id="new_usernameID" placeholder="Username">	
+		<br/>    
+	    <label for="new_password">Password</label>
+	    <input type="text" id="new_password" placeholder="Password">
+	    <br/>    
+	    <label for="redo_password">Enter password again</label>
+	    <input type="text" id="redo_password" placeholder="Password">
+	    <br/>
+	    <label for="new_age">Age</label>
+	    <input type="text" id="new_age" placeholder="Age">  
+	    <br/> 
+	    <label for="new_gender">Gender</label>
+	    <select id = "new_gender">
+			<option value="male">Male</option>
+			<option value="female">Female</option>
+			<option value="other">Other</option>
+		</select> 
+		<br/>
+		<label for="new_major">Major</label>
+	 	<input type="text" id="new_major" placeholder="Major">
+	 	<br/>
+	    <button onclick="register()">Register</button>
+	    
+	    
 	</div>
 </body>
 </html>
