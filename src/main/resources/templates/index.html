@@ -10,55 +10,69 @@
 	function login() {
 		var username = $('#usernameID').val();
 		var password = $('#passwordID').val();
-		
-		jQuery.fn.center = function () {
-		    this.css("position","absolute");
-		    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
-		                                                $(window).scrollTop()) + "px");
-		    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
-		                                                $(window).scrollLeft()) + "px");
-		    return this;
+
+		jQuery.fn.center = function() {
+			this.css("position", "absolute");
+			this.css("top", Math.max(0, (($(window).height() - $(this)
+					.outerHeight()) / 2)
+					+ $(window).scrollTop())
+					+ "px");
+			this.css("left", Math.max(0, (($(window).width() - $(this)
+					.outerWidth()) / 2)
+					+ $(window).scrollLeft())
+					+ "px");
+			return this;
 		}
-		
-		$.ajax({
-			url : "http://localhost:8080/login?username="+username+"&password="+password
-		}).then(function(data) {
-			if(data.result == 'Success'){
+
+		$.ajax(
+				{
+					url : "http://localhost:8080/login?username=" + username
+							+ "&password=" + password
+				}).then(function(data) {//things happen after clicking on login in button
+			if (data.result == 'Success') {
 				$('#formID').hide()
 				$('.result').center();
-				$('.result').css({ 'color': 'green', 'font-size': '300%' });
-				$('.result').text("Hello there,"+ data.loginUser.name);
+				$('.result').css({
+					'color' : 'green',
+					'font-size' : '300%'
+				});
+				$('.result').text("Hello there," + data.loginUser.name);
 				$('.id').text(data.loginUser.id);
 				$('.age').text(data.loginUser.age);
 				$('.gender').text(data.loginUser.gender);
 				$('.major').text(data.loginUser.major);
-			}else{
+			} else {
 				alert("Username or password incorrect!!!")
 			}
 		});
 	}
-	
-	function register(){
+
+	function register() {
 		var newUsername = $('#new_usernameID').val();
 		var newPassword = $('#new_password').val();
 		var rePassword = $("#redo_password").val();
 		var age = $('#new_age').val();
 		var gender = $('#new_gender').val();
 		var major = $('#new_major').val();
-		if (newPassword == rePassword){
-	        $.post("http://localhost:8080/register",
-	                {
-	                  username: newUsername,
-	                  password: newPassword,
-	                  age: age,
-	                  gender: gender,
-	                  major: major
-	                },
-	                function(data,status){
-	                    alert("Data: " + data + "\nStatus: " + status);
-	                });			
-		}else{
+
+		if (newUsername == "") {
+			alert("Enter Username!!!")
+		} else if (newPassword == "") {
+			alert("Enter password!!!")
+		} else if (rePassword == "") {
+			alert("Enter password again!!!")
+		} else if (newPassword != rePassword) {
 			alert("Passwords do not match!!!")
+		} else {
+			$.post("http://localhost:8080/register", {
+				username : newUsername,
+				password : newPassword,
+				age : age,
+				gender : gender,
+				major : major
+			}, function(data, status) {
+				alert("Data: " + data + "\nStatus: " + status);
+			});
 		}
 
 	}
@@ -68,11 +82,10 @@
 </head>
 <body>
 	<div id="formID">
-		<label for="usernameID">Username</label>
-		<input type="text" id="usernameID" placeholder="Username">
-		<label for="passwordID">Password</label>
-		<input type="password" id="passwordID"
-			placeholder="Password">
+		<label for="usernameID">Username</label> <input type="text"
+			id="usernameID" placeholder="Username"> <label
+			for="passwordID">Password</label> <input type="password"
+			id="passwordID" placeholder="Password">
 		<button onclick="login()">Sign in</button>
 	</div>
 	<div>
@@ -83,32 +96,24 @@
 		<p class="major"></p>
 	</div>
 	<div>
-	    <p>Register new account</p>
-	    <label for="new_usernameID">Username</label>
-		<input type="text" id="new_usernameID" placeholder="Username">	
-		<br/>    
-	    <label for="new_password">Password</label>
-	    <input type="text" id="new_password" placeholder="Password">
-	    <br/>    
-	    <label for="redo_password">Enter password again</label>
-	    <input type="text" id="redo_password" placeholder="Password">
-	    <br/>
-	    <label for="new_age">Age</label>
-	    <input type="text" id="new_age" placeholder="Age">  
-	    <br/> 
-	    <label for="new_gender">Gender</label>
-	    <select id = "new_gender">
+		<p>Register new account</p>
+		<label for="new_usernameID">Username</label> <input type="text"
+			id="new_usernameID" placeholder="Username"> <br /> <label
+			for="new_password">Password</label> <input type="text"
+			id="new_password" placeholder="Password"> <br /> <label
+			for="redo_password">Enter password again</label> <input type="text"
+			id="redo_password" placeholder="Password"> <br /> <label
+			for="new_age">Age</label> <input type="text" id="new_age"
+			placeholder="Age"> <br /> <label for="new_gender">Gender</label>
+		<select id="new_gender">
 			<option value="male">Male</option>
 			<option value="female">Female</option>
 			<option value="other">Other</option>
-		</select> 
-		<br/>
-		<label for="new_major">Major</label>
-	 	<input type="text" id="new_major" placeholder="Major">
-	 	<br/>
-	    <button onclick="register()">Register</button>
-	    
-	    
+		</select> <br /> <label for="new_major">Major</label> <input type="text"
+			id="new_major" placeholder="Major"> <br />
+		<button onclick="register()">Register</button>
+
+
 	</div>
 </body>
 </html>

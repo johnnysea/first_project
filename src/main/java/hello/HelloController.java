@@ -31,8 +31,6 @@ public class HelloController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public Response login(@RequestParam("password") String password, @RequestParam("username") String username) {
-    	System.out.println(username);
-    	System.out.println(password);
     	Response rs = new Response();
     	
     	User user = findUser(username,password);
@@ -51,28 +49,20 @@ public class HelloController {
     public Response register(@RequestParam("password") String password, @RequestParam("username") String username, 
     		@RequestParam(value = "gender", required = false) String gender, @RequestParam(value = "age", required = false) Integer age, 
     		@RequestParam(value = "major", required = false) String major) {
+    	//required = false makes the pare optional
     	Response rs = new Response();
-    	System.out.println(password);
-    	System.out.println(username);
-    	System.out.println(gender);
-    	System.out.println(age);
-    	System.out.println(major);
+    	String result = storeUser(username, password, gender, age, major);
+    	
+    	rs.setResult(result);
     	return rs;
     	
     }
-
-
-    
-    
-    
-    
-    
     
     private User findUser(String username, String password) {
     	User user = null;
     	try {
     		Class.forName("com.mysql.cj.jdbc.Driver");  
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Student","app","password");
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Account","root","");
 			PreparedStatement stmt = connection.prepareStatement("select * from student where username = ? and passcode = ?");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
@@ -93,6 +83,34 @@ public class HelloController {
 			e.printStackTrace();
 		} 
     	return user;
+    }
+    
+    private String storeUser(String username, String password, String gender, Integer age, String major) {
+    	String returnStr = null;
+    	try {
+    		Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Account","root","");
+			PreparedStatement stmt = connection.prepareStatement("insert into student(username, passcode, age, gender, major) values(?, ?, ?, ?, ?)");
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			stmt.setInt(3, age);
+			stmt.setString(4, gender);
+			stmt.setString(5, major);
+			
+			int result = stmt.executeUpdate();
+			
+			if(result == 0) {
+				returnStr = "Fail";
+				return returnStr;
+			}else {
+				returnStr = "Successfully registered!";
+				return returnStr;
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
+    	
+    	return returnStr;
     }
     
 }
